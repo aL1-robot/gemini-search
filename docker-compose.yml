@@ -1,0 +1,17 @@
+services:
+  gemini-search:
+    build: .
+    container_name: gemini-search
+    init: true
+    ipc: host                 # recommended by Playwright so Chromium doesn't crash on /dev/shm
+    restart: unless-stopped
+    environment:
+      MODE: serve             # "login" is passed on the command line, see README steps
+    ports:
+      - "127.0.0.1:8001:8001" # search API (local only)
+      - "127.0.0.1:6080:6080" # noVNC, to see/log into the browser (local only)
+    volumes:
+      - gemini-profile:/data  # Chromium profile (login session) lives here
+
+volumes:
+  gemini-profile:
